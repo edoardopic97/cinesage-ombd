@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const movies = await findMoviesFromQuery(query.trim(), category);
+    const { movies, debug } = await findMoviesFromQuery(query.trim(), category);
     if (movies.length > 0) setCachedResults(cacheKey, movies);
 
     // Match tRPC superjson response format exactly
@@ -53,6 +53,7 @@ module.exports = async function handler(req, res) {
             movies,
             count: movies.length,
             cached: false,
+            debug,
           },
         },
       },
