@@ -11,10 +11,10 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    // tRPC sends input as { json: { query, category } }
     const input = req.body?.json || req.body;
     const query = input?.query;
     const category = input?.category || "all";
+    const uid = input?.uid || null;
 
     if (!query || typeof query !== "string" || query.trim().length === 0) {
       return res.status(400).json({
@@ -22,11 +22,9 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Check cache
-    const cacheKey = `${query}:${category}`;
-    const cached = getCachedResults(cacheKey);
+    // Check Firestore cache
+    const cached = await getCachedResults(query, category);
     if (cached) {
-      // Match tRPC superjson response format exactly
       return res.status(200).json({
         result: {
           data: {
@@ -42,9 +40,8 @@ module.exports = async function handler(req, res) {
     }
 
     const movies = await findMoviesFromQuery(query.trim(), category);
-    if (movies.length > 0) setCachedResults(cacheKey, movies);
+    if (movies.length > 0) setCachedResults(query, category, movies, uid);
 
-    // Match tRPC superjson response format exactly
     return res.status(200).json({
       result: {
         data: {

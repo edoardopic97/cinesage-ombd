@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/trpc/:path*", "destination": "/api/trpc/handler" }
+    { "source": "/api/trpc/:path*", "destination": "/api/trpc/handler" },
+    { "source": "/movie/:id", "destination": "/api/movie/[id]" }
   ]
 }
