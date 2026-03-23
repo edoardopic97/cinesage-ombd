@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
   const plot = movie?.Plot && movie.Plot !== "N/A" ? movie.Plot : "";
   const runtime = movie?.Runtime && movie.Runtime !== "N/A" ? movie.Runtime : "";
   const director = movie?.Director && movie.Director !== "N/A" ? movie.Director : "";
-  const deepLink = `cinesage://movie/${id}`;
+  const deepLink = `cinelyse://movie/${id}`;
   const ogDesc = plot || `${genre}${year ? ` • ${year}` : ""}`;
 
   const html = `<!DOCTYPE html>
@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>${title}${year ? ` (${year})` : ""} — CineSage</title>
+  <title>${title}${year ? ` (${year})` : ""} — CINELYSE</title>
   <meta property="og:title" content="${title}${year ? ` (${year})` : ""}"/>
   <meta property="og:description" content="${ogDesc}"/>
   ${poster ? `<meta property="og:image" content="${poster}"/>` : ""}
@@ -61,10 +61,10 @@ module.exports = async (req, res) => {
     <div class="meta">${[year, genre, runtime, director].filter(Boolean).join(" · ")}</div>
     ${rating ? `<div class="rating">⭐ ${rating} IMDb</div>` : ""}
     ${plot ? `<p class="plot">${plot}</p>` : ""}
-    <a class="open-btn" href="${deepLink}" id="openApp">Open in CineSage</a>
+    <a class="open-btn" href="${deepLink}" id="openApp">Open in CINELYSE</a>
     <p class="store">Coming soon to the Play Store & App Store</p>
     <a class="imdb" href="https://www.imdb.com/title/${id}" target="_blank">View on IMDb →</a>
-    <div class="logo">CINESAGE</div>
+    <div class="logo">CINELYSE</div>
   </div>
   <script>
     // Try deep link, if it fails the user stays on this page
